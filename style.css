@@ -192,6 +192,18 @@ h3 {
   color: var(--white);
 }
 
+.btn-uber-eats {
+  background: #000000;
+  color: var(--white);
+  border: 1px solid rgba(6, 193, 103, 0.25);
+}
+
+.btn-uber-eats:hover {
+  background: #06C167;
+  color: #000000;
+  box-shadow: 0 10px 22px rgba(6, 193, 103, 0.24);
+}
+
 .hero-photo,
 .dish-photo,
 .map-placeholder {
@@ -234,6 +246,13 @@ h3 {
 .contact-card p {
   margin-bottom: 0;
   color: var(--muted);
+}
+
+.quick-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: flex-end;
 }
 
 .section {
@@ -438,8 +457,13 @@ h3 {
   }
 
   .btn,
+  .quick-actions,
   .contact-links {
     width: 100%;
+  }
+
+  .quick-actions {
+    flex-direction: column;
   }
 
   .clean-list li,
