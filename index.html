@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Cenaduria La Tia: comida mexicana casera, antojitos, cenas y pedidos por WhatsApp.">
+  <title>Cenaduria La Tia</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="site-header">
+    <nav class="nav container" aria-label="Navegacion principal">
+      <a class="logo" href="#inicio">Cenaduria La Tia</a>
+      <button class="menu-toggle" type="button" aria-label="Abrir menu" aria-expanded="false">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+      <div class="nav-links">
+        <a href="#platillos">Platillos</a>
+        <a href="#menu">Menu</a>
+        <a href="#horario">Horario</a>
+        <a href="#ubicacion">Ubicacion</a>
+        <a class="nav-whatsapp" href="https://wa.me/5210000000000" target="_blank" rel="noopener">WhatsApp</a>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <section id="inicio" class="hero">
+      <div class="container hero-grid">
+        <div class="hero-content">
+          <p class="eyebrow">Sabor casero mexicano</p>
+          <h1>Restaurante La Tia</h1>
+          <p class="hero-text">Antojitos, cenas y platillos preparados con el sabor de casa. Ven por tu favorito o pide por WhatsApp.</p>
+          <div class="hero-actions">
+            <a class="btn btn-primary" href="https://wa.me/5210000000000" target="_blank" rel="noopener">Pedir por WhatsApp</a>
+            <a class="btn btn-secondary" href="#menu">Ver menu</a>
+          </div>
+        </div>
+        <div class="hero-photo" aria-label="Espacio para foto principal del restaurante">
+          <span>Foto del platillo principal</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="quick-contact" aria-label="Pedido rapido por WhatsApp">
+      <div class="container quick-contact-box">
+        <div>
+          <strong>Listo para ordenar?</strong>
+          <p>Escribenos para pedidos, precios actualizados o reservaciones.</p>
+        </div>
+        <a class="btn btn-whatsapp" href="https://wa.me/5210000000000" target="_blank" rel="noopener">Contactar por WhatsApp</a>
+      </div>
+    </section>
+
+    <section id="platillos" class="section">
+      <div class="container">
+        <div class="section-heading">
+          <p class="eyebrow">Favoritos de la casa</p>
+          <h2>Platillos destacados</h2>
+        </div>
+        <div class="featured-grid">
+          <article class="dish-card">
+            <div class="dish-photo">Foto</div>
+            <div class="dish-info">
+              <h3>Pozole rojo</h3>
+              <p>Calientito, servido con lechuga, rabano, cebolla y tostadas.</p>
+            </div>
+          </article>
+          <article class="dish-card">
+            <div class="dish-photo">Foto</div>
+            <div class="dish-info">
+              <h3>Tacos dorados</h3>
+              <p>Crujientes, banados con crema, salsa, queso y verduras frescas.</p>
+            </div>
+          </article>
+          <article class="dish-card">
+            <div class="dish-photo">Foto</div>
+            <div class="dish-info">
+              <h3>Enchiladas</h3>
+              <p>Con salsa de la casa, relleno sabroso y guarnicion tradicional.</p>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="menu" class="section section-warm">
+      <div class="container">
+        <div class="section-heading">
+          <p class="eyebrow">Menu</p>
+          <h2>Elige tu antojo</h2>
+        </div>
+        <div class="category-tabs" role="tablist" aria-label="Categorias del menu">
+          <button class="tab-button active" type="button" data-category="antojitos">Antojitos</button>
+          <button class="tab-button" type="button" data-category="cenas">Cenas</button>
+          <button class="tab-button" type="button" data-category="bebidas">Bebidas</button>
+        </div>
+        <div class="menu-list active" data-menu="antojitos">
+          <div class="menu-item"><span>Sopes</span><strong>$--</strong></div>
+          <div class="menu-item"><span>Quesadillas</span><strong>$--</strong></div>
+          <div class="menu-item"><span>Tostadas</span><strong>$--</strong></div>
+        </div>
+        <div class="menu-list" data-menu="cenas">
+          <div class="menu-item"><span>Pozole</span><strong>$--</strong></div>
+          <div class="menu-item"><span>Enchiladas</span><strong>$--</strong></div>
+          <div class="menu-item"><span>Tacos dorados</span><strong>$--</strong></div>
+        </div>
+        <div class="menu-list" data-menu="bebidas">
+          <div class="menu-item"><span>Agua fresca</span><strong>$--</strong></div>
+          <div class="menu-item"><span>Refresco</span><strong>$--</strong></div>
+          <div class="menu-item"><span>Cafe de olla</span><strong>$--</strong></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container promo">
+        <div>
+          <p class="eyebrow">Especial del dia</p>
+          <h2>Pregunta por la promocion de hoy</h2>
+          <p>Tenemos opciones caseras para comer rico sin complicarte. La promocion puede cambiar segun disponibilidad.</p>
+        </div>
+        <a class="btn btn-primary" href="https://wa.me/5210000000000" target="_blank" rel="noopener">Preguntar ahora</a>
+      </div>
+    </section>
+
+    <section id="horario" class="section section-warm">
+      <div class="container info-grid">
+        <div>
+          <p class="eyebrow">Horario</p>
+          <h2>Te esperamos</h2>
+          <ul class="clean-list">
+            <li><span>Lunes a viernes</span><strong>5:00 PM - 11:00 PM</strong></li>
+            <li><span>Sabado y domingo</span><strong>2:00 PM - 11:00 PM</strong></li>
+          </ul>
+        </div>
+        <div id="ubicacion">
+          <p class="eyebrow">Ubicacion</p>
+          <h2>Visitanos</h2>
+          <p>Agrega aqui la direccion completa de Cenaduria La Tia.</p>
+          <div class="map-placeholder">Mapa o referencia de ubicacion</div>
+        </div>
+      </div>
+    </section>
+
+    <section id="contacto" class="section">
+      <div class="container contact-card">
+        <div>
+          <p class="eyebrow">Contacto</p>
+          <h2>Pedidos e informacion</h2>
+          <p>Actualiza estos datos con el numero real, redes sociales y cualquier detalle importante para tus clientes.</p>
+        </div>
+        <div class="contact-links">
+          <a href="https://wa.me/5210000000000" target="_blank" rel="noopener">WhatsApp: +52 1 000 000 0000</a>
+          <a href="tel:+520000000000">Telefono: +52 000 000 0000</a>
+          <a href="mailto:contacto@cenadurialatia.com">contacto@cenadurialatia.com</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer-content">
+      <p>Copyright <span id="year"></span> Cenaduria La Tia. Todos los derechos reservados.</p>
+      <a href="#inicio">Volver arriba</a>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
