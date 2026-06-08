@@ -10,7 +10,10 @@
 <body>
   <header class="site-header">
     <nav class="nav container" aria-label="Navegacion principal">
-      <a class="logo" href="#inicio">Cenaduría La Tía</a>
+      <a class="logo" href="#inicio" aria-label="Inicio Cenaduría La Tía">
+        <img src="assets/img/logo-oficial.png" alt="Cenaduría La Tía">
+        <span>Cenaduría La Tía</span>
+      </a>
       <button class="menu-toggle" type="button" aria-label="Abrir menu" aria-expanded="false">
         <span></span>
         <span></span>
@@ -30,8 +33,9 @@
     <section id="inicio" class="hero">
       <div class="container hero-grid">
         <div class="hero-content">
-          <p class="eyebrow">Sabor casero mexicano</p>
-          <h1>Cenaduría La Tía</h1>
+          <img class="hero-logo" src="assets/img/logo-oficial.png" alt="Logo Cenaduría La Tía">
+          <p class="eyebrow">Cenaduría La Tía</p>
+          <h1>El auténtico sabor de Sinaloa</h1>
           <p class="hero-text">Antojitos, cenas y platillos preparados con el sabor de casa. Ven por tu favorito o pide por WhatsApp.</p>
           <div class="hero-actions">
             <a class="btn btn-primary" href="https://wa.me/5210000000000" target="_blank" rel="noopener">Pedir por WhatsApp</a>
@@ -480,7 +484,10 @@
 
   <footer class="footer">
     <div class="container footer-content">
-      <p>Copyright <span id="year"></span> Cenaduría La Tía. Todos los derechos reservados.</p>
+      <div class="footer-brand">
+        <img src="assets/img/logo-oficial.png" alt="Cenaduría La Tía">
+        <p>Copyright <span id="year"></span> Cenaduría La Tía. Todos los derechos reservados.</p>
+      </div>
       <a href="#inicio">Volver arriba</a>
     </div>
   </footer>
