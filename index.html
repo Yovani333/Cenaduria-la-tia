@@ -39,8 +39,8 @@
             <a class="btn btn-secondary" href="#menu">Ver menu</a>
           </div>
         </div>
-        <div class="hero-photo" aria-label="Espacio para foto principal del restaurante">
-          <span>Foto del platillo principal</span>
+        <div class="hero-photo" aria-label="Mole de Cenaduría La Tía">
+          <img src="assets/img/mole.jpg" alt="Mole de Cenaduría La Tía">
         </div>
       </div>
     </section>
@@ -66,24 +66,73 @@
         </div>
         <div class="featured-grid">
           <article class="dish-card">
-            <div class="dish-photo">Foto</div>
+            <div class="dish-photo">
+              <img src="assets/img/chilaquiles-de-chipotle-con-huevo-y-arrachera.jpg" alt="Chilaquiles de Chipotle con Huevo y Arrachera">
+            </div>
             <div class="dish-info">
-              <h3>Pozole rojo</h3>
-              <p>Calientito, servido con lechuga, rabano, cebolla y tostadas.</p>
+              <h3>Chilaquiles de Chipotle con Huevo y Arrachera</h3>
+              <p>Picante, con arrachera y el sabor de la casa.</p>
+              <strong class="dish-price">$185</strong>
             </div>
           </article>
           <article class="dish-card">
-            <div class="dish-photo">Foto</div>
+            <div class="dish-photo">
+              <img src="assets/img/enchiladas-placeras.jpg" alt="Enchiladas Placeras">
+            </div>
             <div class="dish-info">
-              <h3>Tacos dorados</h3>
-              <p>Crujientes, banados con crema, salsa, queso y verduras frescas.</p>
+              <h3>Enchiladas Placeras</h3>
+              <p>Acompanadas con lechuga, papas, zanahoria y pollo enchilado.</p>
+              <strong class="dish-price">$170</strong>
             </div>
           </article>
           <article class="dish-card">
-            <div class="dish-photo">Foto</div>
+            <div class="dish-photo">
+              <img src="assets/img/chiles-rellenos.jpg" alt="Chiles Rellenos">
+            </div>
             <div class="dish-info">
-              <h3>Enchiladas</h3>
-              <p>Con salsa de la casa, relleno sabroso y guarnicion tradicional.</p>
+              <h3>Chiles Rellenos</h3>
+              <p>Acompanados de arroz y frijol.</p>
+              <strong class="dish-price">$169</strong>
+            </div>
+          </article>
+          <article class="dish-card">
+            <div class="dish-photo">
+              <img src="assets/img/mole.jpg" alt="Mole">
+            </div>
+            <div class="dish-info">
+              <h3>Mole</h3>
+              <p>Acompanado de arroz y frijol.</p>
+              <strong class="dish-price">$169</strong>
+            </div>
+          </article>
+          <article class="dish-card">
+            <div class="dish-photo">
+              <img src="assets/img/omelette-denver.jpg" alt="Omelette Denver">
+            </div>
+            <div class="dish-info">
+              <h3>Omelette Denver</h3>
+              <p>Jamon de pavo, queso cheddar, cebolla y pimientos.</p>
+              <strong class="dish-price">$175</strong>
+            </div>
+          </article>
+          <article class="dish-card">
+            <div class="dish-photo">
+              <img src="assets/img/orden-de-tacos-dorados-4-piezas.jpg" alt="Orden de Tacos Dorados">
+            </div>
+            <div class="dish-info">
+              <h3>Orden de Tacos Dorados</h3>
+              <p>Carne de res, pollo y papa con lechuga, queso y crema.</p>
+              <strong class="dish-price">$130</strong>
+            </div>
+          </article>
+          <article class="dish-card">
+            <div class="dish-photo">
+              <img src="assets/img/pozole-grande.jpg" alt="Pozole">
+            </div>
+            <div class="dish-info">
+              <h3>Pozole</h3>
+              <p>Pozole grande, calientito y lleno de sabor casero.</p>
+              <strong class="dish-price">$120</strong>
             </div>
           </article>
         </div>
@@ -97,24 +146,279 @@
           <h2>Elige tu antojo</h2>
         </div>
         <div class="category-tabs" role="tablist" aria-label="Categorias del menu">
-          <button class="tab-button active" type="button" data-category="antojitos">Antojitos</button>
-          <button class="tab-button" type="button" data-category="cenas">Cenas</button>
-          <button class="tab-button" type="button" data-category="bebidas">Bebidas</button>
+          <button class="tab-button active" type="button" data-category="combinacion-mexicana">Combinacion Mexicana</button>
+          <button class="tab-button" type="button" data-category="omelettes">Omelettes</button>
+          <button class="tab-button" type="button" data-category="quesadillas">Quesadillas</button>
+          <button class="tab-button" type="button" data-category="tacos-dorados">Tacos Dorados</button>
+          <button class="tab-button" type="button" data-category="chilaquiles">Chilaquiles</button>
+          <button class="tab-button" type="button" data-category="tostadas">Tostadas</button>
+          <button class="tab-button" type="button" data-category="flautas">Flautas</button>
+          <button class="tab-button" type="button" data-category="sopes">Sopes</button>
+          <button class="tab-button" type="button" data-category="especiales">Especiales</button>
+          <button class="tab-button" type="button" data-category="pozole">Pozole</button>
         </div>
-        <div class="menu-list active" data-menu="antojitos">
-          <div class="menu-item"><span>Sopes</span><strong>$--</strong></div>
-          <div class="menu-item"><span>Quesadillas</span><strong>$--</strong></div>
-          <div class="menu-item"><span>Tostadas</span><strong>$--</strong></div>
+        <div class="menu-list active" data-menu="combinacion-mexicana">
+          <article class="menu-card">
+            <img src="assets/img/combinacion-mexicana-1.jpg" alt="Combinacion Mexicana 1">
+            <div class="menu-card-content">
+              <span class="menu-category">Combinacion Mexicana</span>
+              <h3>Combinacion Mexicana 1</h3>
+              <p>1 quesadilla de res, pollo o chicharron; 1 tostada de res o pollo; y 1 sope de res, pollo o chicharron.</p>
+              <strong>$140</strong>
+            </div>
+          </article>
+          <article class="menu-card">
+            <img src="assets/img/combinacion-mexicana-2.jpg" alt="Combinacion Mexicana 2">
+            <div class="menu-card-content">
+              <span class="menu-category">Combinacion Mexicana</span>
+              <h3>Combinacion Mexicana 2</h3>
+              <p>1 enchilada de res o pollo; 1 flauta de res, pollo o papa; 1 taco dorado de res o papa; y 1 tostada de res o pollo.</p>
+              <strong>$140</strong>
+            </div>
+          </article>
         </div>
-        <div class="menu-list" data-menu="cenas">
-          <div class="menu-item"><span>Pozole</span><strong>$--</strong></div>
-          <div class="menu-item"><span>Enchiladas</span><strong>$--</strong></div>
-          <div class="menu-item"><span>Tacos dorados</span><strong>$--</strong></div>
+        <div class="menu-list" data-menu="omelettes">
+          <article class="menu-card">
+            <img src="assets/img/omelette-denver.jpg" alt="Omelette Denver">
+            <div class="menu-card-content">
+              <span class="menu-category">Omelettes</span>
+              <h3>Omelette Denver</h3>
+              <p>Jamon de pavo, queso cheddar, cebolla, pimiento verde y rojo.</p>
+              <strong>$175</strong>
+            </div>
+          </article>
+          <article class="menu-card">
+            <img src="assets/img/omelette-california.jpg" alt="Omelette California">
+            <div class="menu-card-content">
+              <span class="menu-category">Omelettes</span>
+              <h3>Omelette California</h3>
+              <p>Tocino, aguacate y queso Jack.</p>
+              <strong>$175</strong>
+            </div>
+          </article>
+          <article class="menu-card">
+            <img src="assets/img/omelette-chipotle.jpg" alt="Omelette Chipotle">
+            <div class="menu-card-content">
+              <span class="menu-category">Omelettes</span>
+              <h3>Omelette Chipotle</h3>
+              <p>Relleno de pollo y queso Jack, banado en crema chipotle y aguacate. Picante.</p>
+              <strong>$175</strong>
+            </div>
+          </article>
         </div>
-        <div class="menu-list" data-menu="bebidas">
-          <div class="menu-item"><span>Agua fresca</span><strong>$--</strong></div>
-          <div class="menu-item"><span>Refresco</span><strong>$--</strong></div>
-          <div class="menu-item"><span>Cafe de olla</span><strong>$--</strong></div>
+        <div class="menu-list" data-menu="quesadillas">
+          <article class="menu-card">
+            <img src="assets/img/quesadilla-de-queso.jpg" alt="Quesadilla de Queso">
+            <div class="menu-card-content">
+              <span class="menu-category">Quesadillas</span>
+              <h3>Quesadilla de Queso</h3>
+              <p>Hecha de masa de maiz natural, frita. Acompanada con lechuga, queso y crema.</p>
+              <strong>$50</strong>
+            </div>
+          </article>
+          <article class="menu-card">
+            <img src="assets/img/quesadilla-de-carne-de-res.jpg" alt="Quesadilla de Carne de Res">
+            <div class="menu-card-content">
+              <span class="menu-category">Quesadillas</span>
+              <h3>Quesadilla de Carne de Res</h3>
+              <p>Hecha de masa de maiz natural, frita. Acompanada con lechuga, queso y crema.</p>
+              <strong>$50</strong>
+            </div>
+          </article>
+          <article class="menu-card">
+            <img src="assets/img/quesadilla-de-pollo.jpg" alt="Quesadilla de Pollo">
+            <div class="menu-card-content">
+              <span class="menu-category">Quesadillas</span>
+              <h3>Quesadilla de Pollo</h3>
+              <p>Hecha de masa de maiz natural, frita. Acompanada con lechuga, queso y crema.</p>
+              <strong>$50</strong>
+            </div>
+          </article>
+          <article class="menu-card">
+            <img src="assets/img/quesadilla-de-chicharron.jpg" alt="Quesadilla de Chicharron">
+            <div class="menu-card-content">
+              <span class="menu-category">Quesadillas</span>
+              <h3>Quesadilla de Chicharron</h3>
+              <p>Hecha de masa de maiz natural, frita. Acompanada con lechuga, queso y crema.</p>
+              <strong>$50</strong>
+            </div>
+          </article>
+        </div>
+        <div class="menu-list" data-menu="tacos-dorados">
+          <article class="menu-card">
+            <img src="assets/img/orden-de-tacos-dorados-4-piezas.jpg" alt="Orden de Tacos Dorados">
+            <div class="menu-card-content">
+              <span class="menu-category">Tacos Dorados</span>
+              <h3>Orden de Tacos Dorados (4 Piezas)</h3>
+              <p>Carne de res, pollo y papa. Acompanados con lechuga, queso y crema.</p>
+              <strong>$130</strong>
+            </div>
+          </article>
+          <article class="menu-card">
+            <img src="assets/img/taco-dorado-de-carne-individual.jpg" alt="Taco Dorado de Carne">
+            <div class="menu-card-content">
+              <span class="menu-category">Tacos Dorados</span>
+              <h3>Taco Dorado de Carne (Individual)</h3>
+              <p>Acompanado con lechuga, queso y crema.</p>
+              <strong>$50</strong>
+            </div>
+          </article>
+          <article class="menu-card">
+            <img src="assets/img/taco-dorado-de-pollo-individual.jpg" alt="Taco Dorado de Pollo">
+            <div class="menu-card-content">
+              <span class="menu-category">Tacos Dorados</span>
+              <h3>Taco Dorado de Pollo (Individual)</h3>
+              <p>Acompanado con lechuga, queso y crema.</p>
+              <strong>$45</strong>
+            </div>
+          </article>
+          <article class="menu-card">
+            <img src="assets/img/taco-dorado-de-papa-individual.jpg" alt="Taco Dorado de Papa">
+            <div class="menu-card-content">
+              <span class="menu-category">Tacos Dorados</span>
+              <h3>Taco Dorado de Papa (Individual)</h3>
+              <p>Acompanado con lechuga, queso y crema.</p>
+              <strong>$30</strong>
+            </div>
+          </article>
+        </div>
+        <div class="menu-list" data-menu="chilaquiles">
+          <article class="menu-card">
+            <img src="assets/img/chilaquiles-verdes-sencillos.jpg" alt="Chilaquiles Verdes Sencillos">
+            <div class="menu-card-content">
+              <span class="menu-category">Chilaquiles</span>
+              <h3>Chilaquiles Verdes Sencillos</h3>
+              <p>Acompanados con frijoles refritos.</p>
+              <strong>$150</strong>
+            </div>
+          </article>
+          <article class="menu-card">
+            <img src="assets/img/chilaquiles-rojos-sencillos.jpg" alt="Chilaquiles Rojos Sencillos">
+            <div class="menu-card-content">
+              <span class="menu-category">Chilaquiles</span>
+              <h3>Chilaquiles Rojos Sencillos</h3>
+              <p>Acompanados con frijoles refritos.</p>
+              <strong>$150</strong>
+            </div>
+          </article>
+          <article class="menu-card">
+            <img src="assets/img/chilaquiles-de-chipotle-con-huevo-sencillo.jpg" alt="Chilaquiles de Chipotle con Huevo Sencillo">
+            <div class="menu-card-content">
+              <span class="menu-category">Chilaquiles</span>
+              <h3>Chilaquiles de Chipotle con Huevo Sencillo</h3>
+              <p>Acompanados con frijoles refritos. Picante.</p>
+              <strong>$150</strong>
+            </div>
+          </article>
+          <article class="menu-card">
+            <img src="assets/img/chilaquiles-de-chipotle-con-huevo-y-arrachera.jpg" alt="Chilaquiles de Chipotle con Huevo y Arrachera">
+            <div class="menu-card-content">
+              <span class="menu-category">Chilaquiles</span>
+              <h3>Chilaquiles de Chipotle con Huevo y Arrachera</h3>
+              <p>Picante.</p>
+              <strong>$185</strong>
+            </div>
+          </article>
+          <article class="menu-card">
+            <img src="assets/img/chilaquiles-de-chipotle-con-huevo-y-pollo.jpg" alt="Chilaquiles de Chipotle con Huevo y Pollo">
+            <div class="menu-card-content">
+              <span class="menu-category">Chilaquiles</span>
+              <h3>Chilaquiles de Chipotle con Huevo y Pollo</h3>
+              <p>Picante.</p>
+              <strong>$165</strong>
+            </div>
+          </article>
+        </div>
+        <div class="menu-list" data-menu="tostadas">
+          <article class="menu-card">
+            <img src="assets/img/orden-de-tostadas-3-piezas.jpg" alt="Orden de Tostadas">
+            <div class="menu-card-content">
+              <span class="menu-category">Ay Hijas de la Tostada</span>
+              <h3>Orden de Tostadas (3 Piezas)</h3>
+              <p>Carne de res y pollo.</p>
+              <strong>$130</strong>
+            </div>
+          </article>
+        </div>
+        <div class="menu-list" data-menu="flautas">
+          <article class="menu-card">
+            <img src="assets/img/orden-de-flautas-4-piezas.jpg" alt="Orden de Flautas">
+            <div class="menu-card-content">
+              <span class="menu-category">Flautas</span>
+              <h3>Orden de Flautas (4 Piezas)</h3>
+              <p>Con carne, pollo o papa. Acompanadas con lechuga, queso y crema.</p>
+              <strong>$129</strong>
+            </div>
+          </article>
+          <article class="menu-card">
+            <img src="assets/img/flauta-12-orden.jpg" alt="Flauta media orden">
+            <div class="menu-card-content">
+              <span class="menu-category">Flautas</span>
+              <h3>Flauta 1/2 Orden</h3>
+              <p>Carne, pollo o flauta mixta. Acompanadas con lechuga, queso y crema.</p>
+              <strong>$68</strong>
+            </div>
+          </article>
+        </div>
+        <div class="menu-list" data-menu="sopes">
+          <article class="menu-card">
+            <img src="assets/img/sopes-3-piezas.jpg" alt="Sopes">
+            <div class="menu-card-content">
+              <span class="menu-category">Sopes</span>
+              <h3>Sopes (3 Piezas)</h3>
+              <p>Carne de res, pollo, chicharron. Guarnicion: arroz y frijol.</p>
+              <strong>$129</strong>
+            </div>
+          </article>
+        </div>
+        <div class="menu-list" data-menu="especiales">
+          <article class="menu-card">
+            <img src="assets/img/huarache.jpg" alt="Huarache">
+            <div class="menu-card-content">
+              <span class="menu-category">Especiales de la Casa</span>
+              <h3>Huarache</h3>
+              <p>Acompanado de frijol, carne asada, lechuga, queso y crema.</p>
+              <strong>$125</strong>
+            </div>
+          </article>
+          <article class="menu-card">
+            <img src="assets/img/enchiladas-placeras.jpg" alt="Enchiladas Placeras">
+            <div class="menu-card-content">
+              <span class="menu-category">Especiales de la Casa</span>
+              <h3>Enchiladas Placeras</h3>
+              <p>Acompanadas con lechuga, papas, zanahoria y una pieza de pollo enchilado.</p>
+              <strong>$170</strong>
+            </div>
+          </article>
+          <article class="menu-card">
+            <img src="assets/img/chiles-rellenos.jpg" alt="Chiles Rellenos">
+            <div class="menu-card-content">
+              <span class="menu-category">Especiales de la Casa</span>
+              <h3>Chiles Rellenos</h3>
+              <p>Acompanados de arroz y frijol.</p>
+              <strong>$169</strong>
+            </div>
+          </article>
+          <article class="menu-card">
+            <img src="assets/img/mole.jpg" alt="Mole">
+            <div class="menu-card-content">
+              <span class="menu-category">Especiales de la Casa</span>
+              <h3>Mole</h3>
+              <p>Acompanado de arroz y frijol.</p>
+              <strong>$169</strong>
+            </div>
+          </article>
+        </div>
+        <div class="menu-list" data-menu="pozole">
+          <article class="menu-card">
+            <img src="assets/img/pozole-grande.jpg" alt="Pozole">
+            <div class="menu-card-content">
+              <span class="menu-category">Pozole</span>
+              <h3>Pozole</h3>
+              <p>Pozole Grande.</p>
+              <strong>$120</strong>
+            </div>
+          </article>
         </div>
       </div>
     </section>

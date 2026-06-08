@@ -1,0 +1,28 @@
+﻿categoria,nombre,descripcion,precio,imagen
+Combinación Mexicana,Combinación Mexicana 1,"1 quesadilla de res, pollo o chicharrón; 1 tostada de res o pollo; y 1 sope de res, pollo o chicharrón",140,combinacion-mexicana-1.jpg
+Combinación Mexicana,Combinación Mexicana 2,"1 enchilada de res o pollo; 1 flauta de res, pollo o papa; 1 taco dorado de res o papa; y 1 tostada de res o pollo",140,combinacion-mexicana-2.jpg
+Omelettes,Omelette Denver,"Jamón de pavo, queso cheddar, cebolla, pimiento verde y rojo",175,omelette-denver.jpg
+Omelettes,Omelette California,"Tocino, aguacate y queso Jack",175,omelette-california.jpg
+Omelettes,Omelette Chipotle,"Relleno de pollo y queso Jack, bañado en crema chipotle y aguacate. Picante",175,omelette-chipotle.jpg
+Quesadillas,Quesadilla de Queso,"Hecha de masa de maíz natural, frita. Acompañada con lechuga, queso y crema",50,quesadilla-de-queso.jpg
+Quesadillas,Quesadilla de Carne de Res,"Hecha de masa de maíz natural, frita. Acompañada con lechuga, queso y crema",50,quesadilla-de-carne-de-res.jpg
+Quesadillas,Quesadilla de Pollo,"Hecha de masa de maíz natural, frita. Acompañada con lechuga, queso y crema",50,quesadilla-de-pollo.jpg
+Quesadillas,Quesadilla de Chicharrón,"Hecha de masa de maíz natural, frita. Acompañada con lechuga, queso y crema",50,quesadilla-de-chicharron.jpg
+Tacos Dorados,Orden de Tacos Dorados (4 Piezas),"Carne de res, pollo y papa. Acompañados con lechuga, queso y crema",130,orden-de-tacos-dorados-4-piezas.jpg
+Tacos Dorados,Taco Dorado de Carne (Individual),"Acompañados con lechuga, queso y crema",50,taco-dorado-de-carne-individual.jpg
+Tacos Dorados,Taco Dorado de Pollo (Individual),"Acompañados con lechuga, queso y crema",45,taco-dorado-de-pollo-individual.jpg
+Tacos Dorados,Taco Dorado de Papa (Individual),"Acompañados con lechuga, queso y crema",30,taco-dorado-de-papa-individual.jpg
+Chilaquiles,Chilaquiles Verdes Sencillos,Acompañados con frijoles refritos,150,chilaquiles-verdes-sencillos.jpg
+Chilaquiles,Chilaquiles Rojos Sencillos,Acompañados con frijoles refritos,150,chilaquiles-rojos-sencillos.jpg
+Chilaquiles,Chilaquiles de Chipotle con Huevo Sencillo,Acompañados con frijoles refritos. Picante,150,chilaquiles-de-chipotle-con-huevo-sencillo.jpg
+Chilaquiles,Chilaquiles de Chipotle con Huevo y Arrachera,Picante,185,chilaquiles-de-chipotle-con-huevo-y-arrachera.jpg
+Chilaquiles,Chilaquiles de Chipotle con Huevo y Pollo,Picante,165,chilaquiles-de-chipotle-con-huevo-y-pollo.jpg
+¡Ay Hijas de la Tostada!,Orden de Tostadas (3 Piezas),Carne de res y pollo,130,orden-de-tostadas-3-piezas.jpg
+Flautas,Orden de Flautas (4 Piezas),"Con carne, pollo o papa. Acompañadas con lechuga, queso y crema",129,orden-de-flautas-4-piezas.jpg
+Flautas,Flauta ½ Orden,"Carne, pollo o flauta mixta. Acompañadas con lechuga, queso y crema",68,flauta-12-orden.jpg
+Sopes,Sopes (3 Piezas),"Carne de res, pollo, chicharrón. Guarnición: arroz y frijol",129,sopes-3-piezas.jpg
+Especiales de la Casa,Huarache,"Acompañado de frijol, carne asada, lechuga, queso y crema",125,huarache.jpg
+Especiales de la Casa,Enchiladas Placeras,"Acompañadas con lechuga, papas, zanahoria y una pieza de pollo enchilado",170,enchiladas-placeras.jpg
+Especiales de la Casa,Chiles Rellenos,Acompañados de arroz y frijol,169,chiles-rellenos.jpg
+Especiales de la Casa,Mole,Acompañados de arroz y frijol,169,mole.jpg
+Pozole,Pozole,Pozole Grande,120,pozole-grande.jpg
