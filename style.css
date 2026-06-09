@@ -538,6 +538,16 @@ h3 {
   font-weight: 800;
 }
 
+.footer-links {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.footer-links a:first-child {
+  color: var(--gold);
+}
+
 .order-intro-section {
   padding-top: 42px;
 }
@@ -1067,6 +1077,7 @@ h3 {
   .promo,
   .contact-card,
   .footer-brand,
+  .footer-links,
   .footer-content {
     align-items: stretch;
     flex-direction: column;
