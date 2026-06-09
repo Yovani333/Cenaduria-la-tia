@@ -338,6 +338,9 @@ function getFormData() {
     area: document.querySelector("#customer-area").value.trim() || "No especificado",
     deliveryType: type,
     location: location.trim() || "No especificado",
+    deliveryAddress: deliveryAddress.value.trim(),
+    deliveryReference: deliveryReference.value.trim(),
+    pickupPlace: pickupPlace.value.trim(),
     desiredTime: document.querySelector("#desired-time").value,
     paymentMethod: document.querySelector("#payment-method").value,
     phone: document.querySelector("#customer-phone").value.trim(),
@@ -346,20 +349,72 @@ function getFormData() {
   };
 }
 
-function renderConfirmation(folio, formData) {
+function buildOrderData(folio, formData) {
+  const { subtotal, discount, total } = getTotals();
+  const items = Array.from(cart.values()).map((item) => ({
+    id: item.id,
+    category: item.category,
+    name: item.name,
+    quantity: item.quantity,
+    unitPrice: item.price,
+    subtotal: item.price * item.quantity,
+  }));
+
+  return {
+    folio,
+    createdAt: new Date().toISOString(),
+    status: "Nuevo",
+    customerName: formData.name,
+    company: formData.company,
+    area: formData.area,
+    deliveryType: formData.deliveryType,
+    location: formData.location,
+    pickupPlace: formData.pickupPlace,
+    deliveryAddress: formData.deliveryAddress,
+    deliveryReference: formData.deliveryReference,
+    desiredTime: formData.desiredTime,
+    paymentMethod: formData.paymentMethod,
+    phone: formData.phone,
+    email: formData.email,
+    notes: formData.notes,
+    items,
+    subtotal,
+    ccsiDiscountApplied: discount > 0,
+    discountAmount: discount,
+    total,
+  };
+}
+
+function submitOrder(orderData) {
+  // TODO: Replace this demo adapter with a real endpoint:
+  // - Google Apps Script Web App that writes to Google Sheets.
+  // - Firebase / Supabase insert.
+  // - A private backend endpoint owned by the restaurant.
+  // Keep that backend URL outside of this public static file when possible.
+  const key = "cenaduriaLaTiaOrdersDemo";
+  try {
+    const orders = JSON.parse(window.localStorage.getItem(key) || "[]");
+    orders.unshift(orderData);
+    window.localStorage.setItem(key, JSON.stringify(orders));
+  } catch {
+    console.warn("Pedido generado, pero no se pudo guardar en la cola demo local.");
+  }
+
+  return Promise.resolve({ ok: true, mode: "demo-local" });
+}
+
+function renderConfirmation(orderData) {
   if (!orderConfirmation) {
     return;
   }
 
-  const items = Array.from(cart.values());
-  const { subtotal, discount, total } = getTotals();
-  const discountApplied = discount > 0;
-  const itemsHtml = items
+  const discountApplied = orderData.ccsiDiscountApplied;
+  const itemsHtml = orderData.items
     .map(
       (item) => `
         <div class="confirmation-item">
-          <span>${item.quantity} x ${escapeHtml(item.name)} (${currency.format(item.price)} c/u)</span>
-          <strong>${currency.format(item.price * item.quantity)}</strong>
+          <span>${item.quantity} x ${escapeHtml(item.name)} (${currency.format(item.unitPrice)} c/u)</span>
+          <strong>${currency.format(item.subtotal)}</strong>
         </div>
       `
     )
@@ -370,25 +425,25 @@ function renderConfirmation(folio, formData) {
     <h2>Pedido recibido correctamente</h2>
     <p class="confirmation-note">Guarda este folio para recoger o recibir tu pedido.</p>
     <div class="confirmation-grid">
-      <div class="confirmation-field"><span>Folio del pedido</span><strong>${folio}</strong></div>
-      <div class="confirmation-field"><span>Nombre del cliente</span><strong>${escapeHtml(formData.name)}</strong></div>
-      <div class="confirmation-field"><span>Empresa o lugar de trabajo</span><strong>${escapeHtml(formData.company)}</strong></div>
-      <div class="confirmation-field"><span>Área o departamento</span><strong>${escapeHtml(formData.area)}</strong></div>
-      <div class="confirmation-field"><span>Tipo de entrega</span><strong>${escapeHtml(formData.deliveryType)}</strong></div>
-      <div class="confirmation-field"><span>Hora deseada</span><strong>${escapeHtml(formData.desiredTime)}</strong></div>
-      <div class="confirmation-field"><span>Método de pago</span><strong>${escapeHtml(formData.paymentMethod)}</strong></div>
-      <div class="confirmation-field"><span>Lugar de recogida o dirección de entrega</span><strong>${escapeHtml(formData.location)}</strong></div>
+      <div class="confirmation-field"><span>Folio del pedido</span><strong>${orderData.folio}</strong></div>
+      <div class="confirmation-field"><span>Nombre del cliente</span><strong>${escapeHtml(orderData.customerName)}</strong></div>
+      <div class="confirmation-field"><span>Empresa o lugar de trabajo</span><strong>${escapeHtml(orderData.company)}</strong></div>
+      <div class="confirmation-field"><span>Área o departamento</span><strong>${escapeHtml(orderData.area)}</strong></div>
+      <div class="confirmation-field"><span>Tipo de entrega</span><strong>${escapeHtml(orderData.deliveryType)}</strong></div>
+      <div class="confirmation-field"><span>Hora deseada</span><strong>${escapeHtml(orderData.desiredTime)}</strong></div>
+      <div class="confirmation-field"><span>Método de pago</span><strong>${escapeHtml(orderData.paymentMethod)}</strong></div>
+      <div class="confirmation-field"><span>Lugar de recogida o dirección de entrega</span><strong>${escapeHtml(orderData.location)}</strong></div>
     </div>
     <h3>Resumen del pedido</h3>
     <div class="confirmation-items">${itemsHtml}</div>
     <div class="confirmation-total">
-      <div><span>Subtotal</span><strong>${currency.format(subtotal)}</strong></div>
+      <div><span>Subtotal</span><strong>${currency.format(orderData.subtotal)}</strong></div>
       ${
         discountApplied
-          ? `<div><span>Descuento CCSI 15%</span><strong>-${currency.format(discount)}</strong></div>`
+          ? `<div><span>Descuento CCSI 15%</span><strong>-${currency.format(orderData.discountAmount)}</strong></div>`
           : ""
       }
-      <div class="total-row"><span>Total final</span><strong>${currency.format(total)}</strong></div>
+      <div class="total-row"><span>Total final</span><strong>${currency.format(orderData.total)}</strong></div>
     </div>
     ${
       discountApplied
@@ -396,8 +451,8 @@ function renderConfirmation(folio, formData) {
         : ""
     }
     ${
-      formData.notes
-        ? `<div class="confirmation-field"><span>Notas adicionales</span><strong>${escapeHtml(formData.notes)}</strong></div>`
+      orderData.notes
+        ? `<div class="confirmation-field"><span>Notas adicionales</span><strong>${escapeHtml(orderData.notes)}</strong></div>`
         : ""
     }
     <div class="confirmation-actions">
@@ -422,7 +477,7 @@ function resetOrder() {
   }
 }
 
-orderForm?.addEventListener("submit", (event) => {
+orderForm?.addEventListener("submit", async (event) => {
   event.preventDefault();
   clearError();
   updateDeliveryFields();
@@ -435,7 +490,9 @@ orderForm?.addEventListener("submit", (event) => {
 
   const folio = getNextFolio();
   const formData = getFormData();
-  renderConfirmation(folio, formData);
+  const orderData = buildOrderData(folio, formData);
+  await submitOrder(orderData);
+  renderConfirmation(orderData);
 });
 
 orderConfirmation?.addEventListener("click", (event) => {
@@ -461,3 +518,5 @@ function escapeHtml(value) {
 setupMenuOrderButtons();
 updateDeliveryFields();
 renderCart();
+
+window.submitOrder = submitOrder;

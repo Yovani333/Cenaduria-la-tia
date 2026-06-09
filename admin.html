@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex">
+  <title>Panel de pedidos | Cenaduría La Tía</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="admin-page">
+  <main class="admin-shell">
+    <section id="admin-login" class="admin-login order-panel">
+      <img src="assets/img/logo-oficial.png" alt="Cenaduría La Tía">
+      <h1>Panel de pedidos</h1>
+      <p>Acceso privado para revisar la cola de pedidos web.</p>
+      <form id="admin-login-form" class="admin-login-form">
+        <label>
+          <span>Contraseña</span>
+          <input type="password" id="admin-password" autocomplete="current-password" required>
+        </label>
+        <button class="btn btn-primary" type="submit">Entrar al panel</button>
+      </form>
+      <p id="admin-login-error" class="form-message error-message" hidden>Contraseña incorrecta.</p>
+      <p class="admin-demo-note">Demo local: para recibir pedidos reales falta conectar un backend o Google Apps Script.</p>
+    </section>
+
+    <section id="admin-panel" class="admin-panel" hidden>
+      <div class="admin-header">
+        <div>
+          <p class="eyebrow">Cenaduría La Tía</p>
+          <h1>Cola de pedidos</h1>
+          <p>Pedidos recibidos desde el formulario web. Esta primera fase usa una cola demo local preparada para conectarse después a Google Sheets, Firebase, Supabase o backend propio.</p>
+        </div>
+        <div class="admin-actions">
+          <button class="btn btn-secondary" type="button" id="refresh-orders">Actualizar</button>
+          <a class="btn btn-primary" href="index.html">Volver a la página</a>
+        </div>
+      </div>
+
+      <div id="admin-empty" class="order-panel admin-empty">No hay pedidos en la cola demo local.</div>
+      <div id="orders-list" class="orders-list"></div>
+    </section>
+  </main>
+
+  <script src="admin.js"></script>
+</body>
+</html>
