@@ -3,9 +3,9 @@
   --dark-red: #6f1118;
   --green: #146b36;
   --gold: #f3ad1f;
-  --cream: #fff7e8;
-  --warm: #f8e4bf;
-  --white: #ffffff;
+  --cream: #f2d9aa;
+  --warm: #dfb76f;
+  --white: #fff6e6;
   --black: #070707;
   --text: #281b17;
   --muted: #6b5748;
@@ -21,12 +21,13 @@ html {
 }
 
 body {
+  position: relative;
   margin: 0;
   font-family: Arial, Helvetica, sans-serif;
   color: var(--text);
   background:
-    radial-gradient(circle at top right, rgba(243, 173, 31, 0.25), transparent 28%),
-    linear-gradient(180deg, #fffaf0 0%, var(--cream) 42%, #f5dca8 100%);
+    radial-gradient(circle at top right, rgba(243, 173, 31, 0.18), transparent 28%),
+    linear-gradient(180deg, #f0d39f 0%, var(--cream) 44%, #d7a958 100%);
   line-height: 1.6;
 }
 
@@ -36,6 +37,8 @@ a {
 }
 
 .container {
+  position: relative;
+  z-index: 2;
   width: min(1120px, calc(100% - 32px));
   margin: 0 auto;
 }
@@ -44,7 +47,7 @@ a {
   position: sticky;
   top: 0;
   z-index: 10;
-  background: rgba(255, 250, 240, 0.96);
+  background: rgba(255, 246, 230, 0.96);
   border-bottom: 1px solid rgba(143, 21, 29, 0.14);
   backdrop-filter: blur(10px);
 }
@@ -623,7 +626,7 @@ h3 {
   gap: 10px;
   padding: 14px;
   border-radius: 8px;
-  background: #fffaf0;
+  background: #f7e7c9;
   border: 1px solid rgba(143, 21, 29, 0.1);
 }
 
@@ -746,7 +749,7 @@ h3 {
   gap: 16px;
   padding: 16px;
   border-radius: 8px;
-  background: #fffaf0;
+  background: #f7e7c9;
   border: 1px solid rgba(20, 107, 54, 0.14);
 }
 
@@ -816,7 +819,7 @@ h3 {
 .confirmation-total {
   padding: 12px;
   border-radius: 8px;
-  background: #fffaf0;
+  background: #f7e7c9;
 }
 
 .confirmation-field span {

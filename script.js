@@ -30,6 +30,10 @@ const ccsiDiscount = document.querySelector("#ccsi-discount");
 const orderConfirmation = document.querySelector("#order-confirmation");
 let folioCounterFallback = 0;
 
+function isCcsiActive() {
+  return Boolean(ccsiDiscount?.checked);
+}
+
 if (year) {
   year.textContent = new Date().getFullYear();
 }
@@ -208,6 +212,9 @@ function updateDeliveryFields() {
   const type = deliveryType?.value;
   const isPickup = type === "Voy a recoger";
   const isDelivery = type === "Quiero recibir mi pedido";
+  const ccsiActive = isCcsiActive();
+  const customerCompany = document.querySelector("#customer-company");
+  const customerArea = document.querySelector("#customer-area");
 
   if (pickupFields) {
     pickupFields.hidden = !isPickup;
@@ -218,33 +225,47 @@ function updateDeliveryFields() {
   }
 
   if (pickupPlace) {
-    pickupPlace.required = isPickup;
+    pickupPlace.required = isPickup && !ccsiActive;
     if (!isPickup) pickupPlace.value = "";
   }
 
   if (deliveryAddress && deliveryReference) {
-    deliveryAddress.required = isDelivery;
-    deliveryReference.required = isDelivery;
+    deliveryAddress.required = isDelivery && !ccsiActive;
+    deliveryReference.required = isDelivery && !ccsiActive;
     if (!isDelivery) {
       deliveryAddress.value = "";
       deliveryReference.value = "";
     }
   }
+
+  if (customerCompany && customerArea) {
+    customerCompany.required = !ccsiActive;
+    customerArea.required = !ccsiActive;
+  }
 }
 
 deliveryType?.addEventListener("change", updateDeliveryFields);
-ccsiDiscount?.addEventListener("change", renderCart);
+ccsiDiscount?.addEventListener("change", () => {
+  updateDeliveryFields();
+  renderCart();
+});
 
 function validateOrder() {
   const errors = [];
   const requiredFields = [
     ["#customer-name", "Nombre completo"],
-    ["#customer-company", "Empresa o lugar de trabajo"],
-    ["#customer-area", "Área o departamento"],
     ["#delivery-type", "Tipo de entrega"],
     ["#desired-time", "Hora deseada"],
     ["#payment-method", "Método de pago"],
   ];
+  const ccsiActive = isCcsiActive();
+
+  if (!ccsiActive) {
+    requiredFields.push(
+      ["#customer-company", "Empresa o lugar de trabajo"],
+      ["#customer-area", "Área o departamento"]
+    );
+  }
 
   if (cart.size === 0) {
     errors.push("Agrega al menos un producto al carrito.");
@@ -257,11 +278,11 @@ function validateOrder() {
     }
   });
 
-  if (deliveryType?.value === "Voy a recoger" && !pickupPlace?.value.trim()) {
+  if (!ccsiActive && deliveryType?.value === "Voy a recoger" && !pickupPlace?.value.trim()) {
     errors.push("Completa: Lugar donde piensa recoger.");
   }
 
-  if (deliveryType?.value === "Quiero recibir mi pedido") {
+  if (!ccsiActive && deliveryType?.value === "Quiero recibir mi pedido") {
     if (!deliveryAddress?.value.trim()) {
       errors.push("Completa: Dirección o ubicación de entrega.");
     }
@@ -306,17 +327,17 @@ function getNextFolio() {
 
 function getFormData() {
   const type = deliveryType.value;
-  const location =
-    type === "Voy a recoger"
-      ? pickupPlace.value.trim()
-      : `${deliveryAddress.value.trim()} / Referencia: ${deliveryReference.value.trim()}`;
+  const deliveryLocationParts = [deliveryAddress.value.trim(), deliveryReference.value.trim()]
+    .filter(Boolean)
+    .map((value, index) => (index === 1 ? `Referencia: ${value}` : value));
+  const location = type === "Voy a recoger" ? pickupPlace.value.trim() : deliveryLocationParts.join(" / ");
 
   return {
     name: document.querySelector("#customer-name").value.trim(),
-    company: document.querySelector("#customer-company").value.trim(),
-    area: document.querySelector("#customer-area").value.trim(),
+    company: document.querySelector("#customer-company").value.trim() || "No especificado",
+    area: document.querySelector("#customer-area").value.trim() || "No especificado",
     deliveryType: type,
-    location,
+    location: location.trim() || "No especificado",
     desiredTime: document.querySelector("#desired-time").value,
     paymentMethod: document.querySelector("#payment-method").value,
     phone: document.querySelector("#customer-phone").value.trim(),

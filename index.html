@@ -538,10 +538,21 @@
           <form id="order-form" class="order-panel order-form" novalidate>
             <div class="panel-heading">
               <h3>Datos para finalizar</h3>
-              <p>Los campos marcados como obligatorios son necesarios para preparar tu pedido.</p>
+              <p>Los campos marcados como obligatorios son necesarios para preparar tu pedido. Si aplicas descuento CCSI, algunos datos de empresa y entrega quedan como opcionales.</p>
             </div>
 
             <div id="order-error" class="form-message error-message" role="alert" hidden></div>
+
+            <div class="ccsi-box">
+              <h3>Descuento para empleados CCSI</h3>
+              <p>¿Trabajas en CCSI? Activa esta opción para solicitar tu 15% de descuento. El descuento se valida al pagar mostrando tu gafete de empleado.</p>
+              <p>Al activar esta opción, empresa, área, dirección, referencia y lugar de recogida quedan como datos opcionales.</p>
+              <label class="checkbox-label">
+                <input type="checkbox" id="ccsi-discount" name="ccsiDiscount">
+                <span>Soy empleado de CCSI y quiero aplicar el 15% de descuento</span>
+              </label>
+              <p class="ccsi-warning">Para hacer válido el descuento del 15%, deberás presentar tu gafete de empleado CCSI al momento de pagar. Si no presentas gafete, se cobrará el precio normal.</p>
+            </div>
 
             <div class="form-grid">
               <label>
@@ -615,16 +626,6 @@
               <span>Notas adicionales (opcional)</span>
               <textarea id="order-notes" name="orderNotes" rows="4" placeholder="Ejemplo: sin crema, entregar en recepción, llevar cambio, etc."></textarea>
             </label>
-
-            <div class="ccsi-box">
-              <h3>Descuento para empleados CCSI</h3>
-              <p>¿Trabajas en CCSI? Activa esta opción para solicitar tu 15% de descuento. El descuento se valida al pagar mostrando tu gafete de empleado.</p>
-              <label class="checkbox-label">
-                <input type="checkbox" id="ccsi-discount" name="ccsiDiscount">
-                <span>Soy empleado de CCSI y quiero aplicar el 15% de descuento</span>
-              </label>
-              <p class="ccsi-warning">Para hacer válido el descuento del 15%, deberás presentar tu gafete de empleado CCSI al momento de pagar. Si no presentas gafete, se cobrará el precio normal.</p>
-            </div>
 
             <button class="btn btn-primary submit-order" type="submit">Finalizar pedido web</button>
           </form>
