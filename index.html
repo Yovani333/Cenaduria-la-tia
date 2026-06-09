@@ -24,6 +24,7 @@
         <a href="#menu">Menu</a>
         <a href="#horario">Horario</a>
         <a href="#ubicacion">Ubicacion</a>
+        <a href="#pedido-web">Pedir en línea</a>
         <a class="nav-whatsapp" href="https://wa.me/5210000000000" target="_blank" rel="noopener">WhatsApp</a>
       </div>
     </nav>
@@ -38,6 +39,7 @@
           <h1>El auténtico sabor de Sinaloa</h1>
           <p class="hero-text">Antojitos, cenas y platillos preparados con el sabor de casa. Ven por tu favorito o pide por WhatsApp.</p>
           <div class="hero-actions">
+            <a class="btn btn-primary" href="#pedido-web">Pedir desde la página</a>
             <a class="btn btn-primary" href="https://wa.me/5210000000000" target="_blank" rel="noopener">Pedir por WhatsApp</a>
             <a class="btn btn-uber-eats" href="https://www.ubereats.com/mx/store/cenaduria-la-tia-tijuana/-XhYn-DqWiixjA2jXDcjHQ?diningMode=DELIVERY&pl=JTdCJTIyYWRkcmVzcyUyMiUzQSUyMjE2JTIwZGUlMjBTZXB0aWVtYnJlJTIwMTQwNTElMjIlMkMlMjJyZWZlcmVuY2UlMjIlM0ElMjJFa1V4TmlCa1pTQlRaWEIwYVdWdFluSmxJREUwTURVeExDQlBkR0Y1SUVsdWMzVnlaMlZ1ZEdWekxDQXlNalF5TUNCVWFXcDFZVzVoTENCQ0xrTXVMQ0JOWlhocFkyOGlNUkl2Q2hRS0Vnbjl1WFhQMmtmWmdCRU1GMUhzb1dTLVVSRGpiU29VQ2hJSlp3ZEMyZHBIMllBUmJDQ2tCdk1UMDI0JTIyJTJDJTIycmVmZXJlbmNlVHlwZSUyMiUzQSUyMmdvb2dsZV9wbGFjZXMlMjIlMkMlMjJsYXRpdHVkZSUyMiUzQTMyLjUzNjYzODMlMkMlMjJsb25naXR1ZGUlMjIlM0EtMTE2Ljk3NDA2NjElN0Q%3D&ps=1&sc=SEARCH_SUGGESTION" target="_blank" rel="noopener noreferrer">Pedir por Uber Eats</a>
             <a class="btn btn-secondary" href="#menu">Ver menu</a>
@@ -140,6 +142,17 @@
             </div>
           </article>
         </div>
+      </div>
+    </section>
+
+    <section class="section order-intro-section">
+      <div class="container order-intro">
+        <div>
+          <p class="eyebrow">Pedidos desde computadora</p>
+          <h2>Haz tu pedido sin celular ni redes sociales</h2>
+          <p>¿No puedes usar celular, WhatsApp o redes sociales en tu trabajo? Haz tu pedido directamente desde esta página. Puedes elegir recoger o recibir tu pedido. El teléfono y el correo son opcionales.</p>
+        </div>
+        <a class="btn btn-primary" href="#pedido-web">Hacer pedido web</a>
       </div>
     </section>
 
@@ -496,6 +509,128 @@
             </div>
           </article>
         </div>
+      </div>
+    </section>
+
+    <section id="pedido-web" class="section order-section">
+      <div class="container">
+        <div class="section-heading">
+          <p class="eyebrow">Pedido web</p>
+          <h2>Haz tu pedido en línea</h2>
+          <p>Haz tu pedido directamente desde esta página. No necesitas WhatsApp, celular, redes sociales ni correo obligatorio. Al finalizar recibirás un folio en pantalla para recoger o recibir tu pedido.</p>
+        </div>
+
+        <div class="order-layout">
+          <div class="order-panel cart-panel">
+            <div class="panel-heading">
+              <h3>Carrito del pedido</h3>
+              <p>Agrega productos desde el menú y revisa cantidades antes de finalizar.</p>
+            </div>
+            <div id="cart-empty" class="cart-empty">Tu carrito está vacío. Elige platillos del menú y presiona “Agregar al pedido”.</div>
+            <div id="cart-items" class="cart-items" aria-live="polite"></div>
+            <div id="cart-totals" class="cart-totals" hidden>
+              <div><span>Subtotal</span><strong id="cart-subtotal">$0</strong></div>
+              <div id="cart-discount-row" class="discount-row" hidden><span>Descuento CCSI 15%</span><strong id="cart-discount">-$0</strong></div>
+              <div class="total-row"><span>Total a pagar</span><strong id="cart-total">$0</strong></div>
+            </div>
+          </div>
+
+          <form id="order-form" class="order-panel order-form" novalidate>
+            <div class="panel-heading">
+              <h3>Datos para finalizar</h3>
+              <p>Los campos marcados como obligatorios son necesarios para preparar tu pedido.</p>
+            </div>
+
+            <div id="order-error" class="form-message error-message" role="alert" hidden></div>
+
+            <div class="form-grid">
+              <label>
+                <span>Nombre completo</span>
+                <input type="text" id="customer-name" name="customerName" autocomplete="name" required>
+              </label>
+              <label>
+                <span>Empresa o lugar de trabajo</span>
+                <input type="text" id="customer-company" name="customerCompany" required>
+              </label>
+              <label>
+                <span>Área o departamento</span>
+                <input type="text" id="customer-area" name="customerArea" required>
+              </label>
+              <label>
+                <span>Hora deseada</span>
+                <input type="time" id="desired-time" name="desiredTime" required>
+              </label>
+              <label>
+                <span>Tipo de entrega</span>
+                <select id="delivery-type" name="deliveryType" required>
+                  <option value="">Selecciona una opción</option>
+                  <option value="Voy a recoger">Voy a recoger</option>
+                  <option value="Quiero recibir mi pedido">Quiero recibir mi pedido</option>
+                </select>
+              </label>
+              <label>
+                <span>Método de pago</span>
+                <select id="payment-method" name="paymentMethod" required>
+                  <option value="">Selecciona una opción</option>
+                  <option value="Efectivo">Efectivo</option>
+                  <option value="Tarjeta al recoger / recibir">Tarjeta al recoger / recibir</option>
+                  <option value="Transferencia">Transferencia</option>
+                  <option value="Otro">Otro</option>
+                </select>
+              </label>
+            </div>
+
+            <div id="pickup-fields" class="conditional-fields" hidden>
+              <label>
+                <span>Lugar donde piensa recoger</span>
+                <input type="text" id="pickup-place" name="pickupPlace" placeholder="Ejemplo: restaurante, recepción, caseta, entrada principal o punto acordado">
+              </label>
+            </div>
+
+            <div id="delivery-fields" class="conditional-fields" hidden>
+              <label>
+                <span>Dirección o ubicación de entrega</span>
+                <input type="text" id="delivery-address" name="deliveryAddress" placeholder="Ejemplo: empresa, oficina, plaza, colonia o ubicación de entrega">
+              </label>
+              <label>
+                <span>Referencia de entrega</span>
+                <input type="text" id="delivery-reference" name="deliveryReference" placeholder="Ejemplo: recepción, caseta, piso, área, comedor o entrada principal">
+              </label>
+            </div>
+
+            <div class="form-grid optional-grid">
+              <label>
+                <span>Teléfono (opcional)</span>
+                <input type="tel" id="customer-phone" name="customerPhone">
+                <small>Solo si deseas que podamos contactarte.</small>
+              </label>
+              <label>
+                <span>Correo electrónico (opcional)</span>
+                <input type="email" id="customer-email" name="customerEmail">
+                <small>Solo si deseas recibir confirmación.</small>
+              </label>
+            </div>
+
+            <label>
+              <span>Notas adicionales (opcional)</span>
+              <textarea id="order-notes" name="orderNotes" rows="4" placeholder="Ejemplo: sin crema, entregar en recepción, llevar cambio, etc."></textarea>
+            </label>
+
+            <div class="ccsi-box">
+              <h3>Descuento para empleados CCSI</h3>
+              <p>¿Trabajas en CCSI? Activa esta opción para solicitar tu 15% de descuento. El descuento se valida al pagar mostrando tu gafete de empleado.</p>
+              <label class="checkbox-label">
+                <input type="checkbox" id="ccsi-discount" name="ccsiDiscount">
+                <span>Soy empleado de CCSI y quiero aplicar el 15% de descuento</span>
+              </label>
+              <p class="ccsi-warning">Para hacer válido el descuento del 15%, deberás presentar tu gafete de empleado CCSI al momento de pagar. Si no presentas gafete, se cobrará el precio normal.</p>
+            </div>
+
+            <button class="btn btn-primary submit-order" type="submit">Finalizar pedido web</button>
+          </form>
+        </div>
+
+        <div id="order-confirmation" class="order-confirmation" hidden></div>
       </div>
     </section>
 
