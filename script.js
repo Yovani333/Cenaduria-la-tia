@@ -521,7 +521,10 @@ orderForm?.addEventListener("submit", async (event) => {
   const formData = getFormData();
   const orderData = buildOrderData(folio, formData);
   try {
-    await submitOrder(orderData);
+    const submitResult = await submitOrder(orderData);
+    if (submitResult?.emailAlertSent === false) {
+      console.warn("Pedido guardado, pero Google Apps Script no pudo enviar la alerta por correo.", submitResult.emailAlertError || "");
+    }
     renderConfirmation(orderData);
   } catch {
     showError(["No se pudo enviar el pedido al sistema. Intenta nuevamente o avisa al restaurante."]);

@@ -54,11 +54,13 @@ function doPost(e) {
     ]);
 
     let emailAlertSent = true;
+    let emailAlertError = "";
     try {
       sendOrderEmailAlert(normalizedOrder);
     } catch (emailError) {
       emailAlertSent = false;
-      Logger.log("Error enviando alerta por correo: " + emailError.message);
+      emailAlertError = emailError.message;
+      Logger.log("Error enviando alerta por correo: " + emailAlertError);
     }
 
     return jsonResponse({
@@ -66,6 +68,7 @@ function doPost(e) {
       ok: true,
       saved: true,
       emailAlertSent: emailAlertSent,
+      emailAlertError: emailAlertError,
       folio: normalizedOrder.folio,
     });
   } catch (error) {
@@ -75,6 +78,7 @@ function doPost(e) {
       ok: false,
       saved: false,
       emailAlertSent: false,
+      emailAlertError: "",
       message: error.message,
     });
   }
@@ -153,6 +157,19 @@ function sendOrderEmailAlert(order) {
     to: ALERT_EMAILS.join(","),
     subject: subject,
     body: body,
+  });
+}
+
+function testOrderEmailAlert() {
+  MailApp.sendEmail({
+    to: ALERT_EMAILS.join(","),
+    subject: "Prueba de alerta - Cenaduría La Tía",
+    body: [
+      "Esta es una prueba manual de alerta por correo.",
+      "",
+      "Si recibes este correo, MailApp ya tiene permisos para enviar alertas.",
+      "Después de confirmar esto, haz un pedido web de prueba.",
+    ].join("\n"),
   });
 }
 
