@@ -5,7 +5,7 @@ const menuLists = document.querySelectorAll(".menu-list");
 const year = document.querySelector("#year");
 
 const cart = new Map();
-const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxARWe2hxE4IiIVE_-75gMilPj6TdAQ0773_7-WnOVgE00yQbnj2g0kj1WqJFCwAtRj/exec";
+const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyCS5JJNQAyHCWOuuoDPM-9JcDmQjKy4dOgzwkwQSMnBcXBBLaX5S0JKgPUxrfC5lVc/exec";
 const currency = new Intl.NumberFormat("es-MX", {
   style: "currency",
   currency: "MXN",
@@ -25,15 +25,10 @@ const deliveryType = document.querySelector("#delivery-type");
 const pickupFields = document.querySelector("#pickup-fields");
 const deliveryFields = document.querySelector("#delivery-fields");
 const pickupPlace = document.querySelector("#pickup-place");
-const deliveryAddress = document.querySelector("#delivery-address");
 const deliveryReference = document.querySelector("#delivery-reference");
 const ccsiDiscount = document.querySelector("#ccsi-discount");
 const orderConfirmation = document.querySelector("#order-confirmation");
 let folioCounterFallback = 0;
-
-function isCcsiActive() {
-  return Boolean(ccsiDiscount?.checked);
-}
 
 if (year) {
   year.textContent = new Date().getFullYear();
@@ -213,9 +208,6 @@ function updateDeliveryFields() {
   const type = deliveryType?.value;
   const isPickup = type === "Voy a recoger";
   const isDelivery = type === "Quiero recibir mi pedido";
-  const ccsiActive = isCcsiActive();
-  const customerCompany = document.querySelector("#customer-company");
-  const customerArea = document.querySelector("#customer-area");
 
   if (pickupFields) {
     pickupFields.hidden = !isPickup;
@@ -226,28 +218,20 @@ function updateDeliveryFields() {
   }
 
   if (pickupPlace) {
-    pickupPlace.required = isPickup && !ccsiActive;
+    pickupPlace.required = isPickup;
     if (!isPickup) pickupPlace.value = "";
   }
 
-  if (deliveryAddress && deliveryReference) {
-    deliveryAddress.required = isDelivery && !ccsiActive;
-    deliveryReference.required = isDelivery && !ccsiActive;
+  if (deliveryReference) {
+    deliveryReference.required = isDelivery;
     if (!isDelivery) {
-      deliveryAddress.value = "";
       deliveryReference.value = "";
     }
-  }
-
-  if (customerCompany && customerArea) {
-    customerCompany.required = !ccsiActive;
-    customerArea.required = !ccsiActive;
   }
 }
 
 deliveryType?.addEventListener("change", updateDeliveryFields);
 ccsiDiscount?.addEventListener("change", () => {
-  updateDeliveryFields();
   renderCart();
 });
 
@@ -255,18 +239,11 @@ function validateOrder() {
   const errors = [];
   const requiredFields = [
     ["#customer-name", "Nombre completo"],
+    ["#customer-company", "Empresa o lugar de trabajo"],
     ["#delivery-type", "Tipo de entrega"],
     ["#desired-time", "Hora deseada"],
     ["#payment-method", "Método de pago"],
   ];
-  const ccsiActive = isCcsiActive();
-
-  if (!ccsiActive) {
-    requiredFields.push(
-      ["#customer-company", "Empresa o lugar de trabajo"],
-      ["#customer-area", "Área o departamento"]
-    );
-  }
 
   if (cart.size === 0) {
     errors.push("Agrega al menos un producto al carrito.");
@@ -279,16 +256,13 @@ function validateOrder() {
     }
   });
 
-  if (!ccsiActive && deliveryType?.value === "Voy a recoger" && !pickupPlace?.value.trim()) {
+  if (deliveryType?.value === "Voy a recoger" && !pickupPlace?.value.trim()) {
     errors.push("Completa: Lugar donde piensa recoger.");
   }
 
-  if (!ccsiActive && deliveryType?.value === "Quiero recibir mi pedido") {
-    if (!deliveryAddress?.value.trim()) {
-      errors.push("Completa: Dirección o ubicación de entrega.");
-    }
+  if (deliveryType?.value === "Quiero recibir mi pedido") {
     if (!deliveryReference?.value.trim()) {
-      errors.push("Completa: Referencia de entrega.");
+      errors.push("Completa: Referencia o lugar de entrega.");
     }
   }
 
@@ -328,30 +302,26 @@ function getNextFolio() {
 
 function getFormData() {
   const type = deliveryType.value;
-  const deliveryLocationParts = [deliveryAddress.value.trim(), deliveryReference.value.trim()]
-    .filter(Boolean)
-    .map((value, index) => (index === 1 ? `Referencia: ${value}` : value));
-  const location = type === "Voy a recoger" ? pickupPlace.value.trim() : deliveryLocationParts.join(" / ");
+  const pickupValue = pickupPlace.value.trim();
+  const referenceValue = deliveryReference.value.trim();
 
   return {
     name: document.querySelector("#customer-name").value.trim(),
-    company: document.querySelector("#customer-company").value.trim() || "No especificado",
-    area: document.querySelector("#customer-area").value.trim() || "No especificado",
+    company: document.querySelector("#customer-company").value.trim(),
     deliveryType: type,
-    location: location.trim() || "No especificado",
-    deliveryAddress: deliveryAddress.value.trim(),
-    deliveryReference: deliveryReference.value.trim(),
-    pickupPlace: pickupPlace.value.trim(),
+    location: type === "Voy a recoger" ? pickupValue : referenceValue,
+    deliveryReference: referenceValue,
+    pickupPlace: pickupValue,
     desiredTime: document.querySelector("#desired-time").value,
     paymentMethod: document.querySelector("#payment-method").value,
     phone: document.querySelector("#customer-phone").value.trim(),
-    email: document.querySelector("#customer-email").value.trim(),
     notes: document.querySelector("#order-notes").value.trim(),
   };
 }
 
 function buildOrderData(folio, formData) {
   const { subtotal, discount, total } = getTotals();
+  const fechaHora = new Date().toISOString();
   const items = Array.from(cart.values()).map((item) => ({
     id: item.id,
     category: item.category,
@@ -360,29 +330,48 @@ function buildOrderData(folio, formData) {
     unitPrice: item.price,
     subtotal: item.price * item.quantity,
   }));
+  const itemsSummary = items
+    .map((item) => `${item.quantity} x ${item.name} (${currency.format(item.unitPrice)} c/u) = ${currency.format(item.subtotal)}`)
+    .join("\n");
 
   return {
     folio,
-    createdAt: new Date().toISOString(),
+    fechaHora,
+    nombre: formData.name,
+    empresa: formData.company,
+    tipoEntrega: formData.deliveryType,
+    lugarRecogida: formData.pickupPlace,
+    referenciaEntrega: formData.deliveryReference,
+    horaDeseada: formData.desiredTime,
+    metodoPago: formData.paymentMethod,
+    telefono: formData.phone,
+    notas: formData.notes,
+    items,
+    pedidoCompleto: itemsSummary,
+    subtotal,
+    descuentoCcsiAplicado: discount > 0,
+    descuentoCcsiAplicadoTexto: discount > 0 ? "Sí" : "No",
+    montoDescuentoCcsi: discount,
+    totalFinal: total,
+    avisoGafete:
+      discount > 0
+        ? "Validar gafete CCSI al momento de pagar."
+        : "",
+    estado: "Nuevo",
+    createdAt: fechaHora,
     status: "Nuevo",
     customerName: formData.name,
     company: formData.company,
-    area: formData.area,
     deliveryType: formData.deliveryType,
     location: formData.location,
     pickupPlace: formData.pickupPlace,
-    deliveryAddress: formData.deliveryAddress,
+    deliveryAddress: "",
     deliveryReference: formData.deliveryReference,
     desiredTime: formData.desiredTime,
     paymentMethod: formData.paymentMethod,
     phone: formData.phone,
-    email: formData.email,
     notes: formData.notes,
-    items,
-    itemsSummary: items
-      .map((item) => `${item.quantity} x ${item.name} (${currency.format(item.unitPrice)} c/u) = ${currency.format(item.subtotal)}`)
-      .join("\n"),
-    subtotal,
+    itemsSummary,
     ccsiDiscountApplied: discount > 0,
     ccsiDiscountAppliedText: discount > 0 ? "Sí" : "No",
     discountAmount: discount,
@@ -408,7 +397,7 @@ async function sendOrderToGoogleSheets(orderData) {
   });
   const data = await response.json().catch(() => ({}));
 
-  if (!response.ok || data.ok === false) {
+  if (!response.ok || data.ok === false || data.success === false) {
     throw new Error(data.message || "Google Apps Script no confirmó el pedido.");
   }
 
@@ -449,7 +438,7 @@ function renderConfirmation(orderData) {
     return;
   }
 
-  const discountApplied = orderData.ccsiDiscountApplied;
+  const discountApplied = orderData.descuentoCcsiAplicado;
   const itemsHtml = orderData.items
     .map(
       (item) => `
@@ -467,13 +456,12 @@ function renderConfirmation(orderData) {
     <p class="confirmation-note">Guarda este folio para recoger o recibir tu pedido.</p>
     <div class="confirmation-grid">
       <div class="confirmation-field"><span>Folio del pedido</span><strong>${orderData.folio}</strong></div>
-      <div class="confirmation-field"><span>Nombre del cliente</span><strong>${escapeHtml(orderData.customerName)}</strong></div>
-      <div class="confirmation-field"><span>Empresa o lugar de trabajo</span><strong>${escapeHtml(orderData.company)}</strong></div>
-      <div class="confirmation-field"><span>Área o departamento</span><strong>${escapeHtml(orderData.area)}</strong></div>
-      <div class="confirmation-field"><span>Tipo de entrega</span><strong>${escapeHtml(orderData.deliveryType)}</strong></div>
-      <div class="confirmation-field"><span>Hora deseada</span><strong>${escapeHtml(orderData.desiredTime)}</strong></div>
-      <div class="confirmation-field"><span>Método de pago</span><strong>${escapeHtml(orderData.paymentMethod)}</strong></div>
-      <div class="confirmation-field"><span>Lugar de recogida o dirección de entrega</span><strong>${escapeHtml(orderData.location)}</strong></div>
+      <div class="confirmation-field"><span>Nombre del cliente</span><strong>${escapeHtml(orderData.nombre)}</strong></div>
+      <div class="confirmation-field"><span>Empresa o lugar de trabajo</span><strong>${escapeHtml(orderData.empresa)}</strong></div>
+      <div class="confirmation-field"><span>Tipo de entrega</span><strong>${escapeHtml(orderData.tipoEntrega)}</strong></div>
+      <div class="confirmation-field"><span>Hora deseada</span><strong>${escapeHtml(orderData.horaDeseada)}</strong></div>
+      <div class="confirmation-field"><span>Método de pago</span><strong>${escapeHtml(orderData.metodoPago)}</strong></div>
+      <div class="confirmation-field"><span>${orderData.tipoEntrega === "Voy a recoger" ? "Lugar de recogida" : "Referencia o lugar de entrega"}</span><strong>${escapeHtml(orderData.tipoEntrega === "Voy a recoger" ? orderData.lugarRecogida : orderData.referenciaEntrega)}</strong></div>
     </div>
     <h3>Resumen del pedido</h3>
     <div class="confirmation-items">${itemsHtml}</div>
@@ -481,10 +469,10 @@ function renderConfirmation(orderData) {
       <div><span>Subtotal</span><strong>${currency.format(orderData.subtotal)}</strong></div>
       ${
         discountApplied
-          ? `<div><span>Descuento CCSI 15%</span><strong>-${currency.format(orderData.discountAmount)}</strong></div>`
+          ? `<div><span>Descuento CCSI 15%</span><strong>-${currency.format(orderData.montoDescuentoCcsi)}</strong></div>`
           : ""
       }
-      <div class="total-row"><span>Total final</span><strong>${currency.format(orderData.total)}</strong></div>
+      <div class="total-row"><span>Total final</span><strong>${currency.format(orderData.totalFinal)}</strong></div>
     </div>
     ${
       discountApplied
@@ -492,8 +480,8 @@ function renderConfirmation(orderData) {
         : ""
     }
     ${
-      orderData.notes
-        ? `<div class="confirmation-field"><span>Notas adicionales</span><strong>${escapeHtml(orderData.notes)}</strong></div>`
+      orderData.notas
+        ? `<div class="confirmation-field"><span>Notas adicionales</span><strong>${escapeHtml(orderData.notas)}</strong></div>`
         : ""
     }
     <div class="confirmation-actions">

@@ -150,7 +150,7 @@
         <div>
           <p class="eyebrow">Pedidos desde computadora</p>
           <h2>Haz tu pedido sin celular ni redes sociales</h2>
-          <p>¿No puedes usar celular, WhatsApp o redes sociales en tu trabajo? Haz tu pedido directamente desde esta página. Puedes elegir recoger o recibir tu pedido. El teléfono y el correo son opcionales.</p>
+          <p>¿No puedes usar celular, WhatsApp o redes sociales en tu trabajo? Haz tu pedido directamente desde esta página. Puedes elegir recoger o recibir tu pedido. El teléfono es opcional.</p>
         </div>
         <a class="btn btn-primary" href="#pedido-web">Hacer pedido web</a>
       </div>
@@ -517,7 +517,7 @@
         <div class="section-heading">
           <p class="eyebrow">Pedido web</p>
           <h2>Haz tu pedido en línea</h2>
-          <p>Haz tu pedido directamente desde esta página. No necesitas WhatsApp, celular, redes sociales ni correo obligatorio. Al finalizar recibirás un folio en pantalla para recoger o recibir tu pedido.</p>
+          <p>Haz tu pedido directamente desde esta página. No necesitas WhatsApp, celular, redes sociales ni correo electrónico. Al finalizar recibirás un folio en pantalla para recoger o recibir tu pedido.</p>
         </div>
 
         <div class="order-layout">
@@ -538,7 +538,7 @@
           <form id="order-form" class="order-panel order-form" novalidate>
             <div class="panel-heading">
               <h3>Datos para finalizar</h3>
-              <p>Los campos marcados como obligatorios son necesarios para preparar tu pedido. Si aplicas descuento CCSI, algunos datos de empresa y entrega quedan como opcionales.</p>
+              <p>Los campos marcados como obligatorios son necesarios para preparar tu pedido.</p>
             </div>
 
             <div id="order-error" class="form-message error-message" role="alert" hidden></div>
@@ -546,7 +546,6 @@
             <div class="ccsi-box">
               <h3>Descuento para empleados CCSI</h3>
               <p>¿Trabajas en CCSI? Activa esta opción para solicitar tu 15% de descuento. El descuento se valida al pagar mostrando tu gafete de empleado.</p>
-              <p>Al activar esta opción, empresa, área, dirección, referencia y lugar de recogida quedan como datos opcionales.</p>
               <label class="checkbox-label">
                 <input type="checkbox" id="ccsi-discount" name="ccsiDiscount">
                 <span>Soy empleado de CCSI y quiero aplicar el 15% de descuento</span>
@@ -562,10 +561,6 @@
               <label>
                 <span>Empresa o lugar de trabajo</span>
                 <input type="text" id="customer-company" name="customerCompany" required>
-              </label>
-              <label>
-                <span>Área o departamento</span>
-                <input type="text" id="customer-area" name="customerArea" required>
               </label>
               <label>
                 <span>Hora deseada</span>
@@ -600,12 +595,8 @@
 
             <div id="delivery-fields" class="conditional-fields" hidden>
               <label>
-                <span>Dirección o ubicación de entrega</span>
-                <input type="text" id="delivery-address" name="deliveryAddress" placeholder="Ejemplo: empresa, oficina, plaza, colonia o ubicación de entrega">
-              </label>
-              <label>
-                <span>Referencia de entrega</span>
-                <input type="text" id="delivery-reference" name="deliveryReference" placeholder="Ejemplo: recepción, caseta, piso, área, comedor o entrada principal">
+                <span>Referencia o lugar de entrega</span>
+                <input type="text" id="delivery-reference" name="deliveryReference" placeholder="Ejemplo: recepción, caseta, comedor, entrada principal, piso, área o punto acordado">
               </label>
             </div>
 
@@ -614,11 +605,6 @@
                 <span>Teléfono (opcional)</span>
                 <input type="tel" id="customer-phone" name="customerPhone">
                 <small>Solo si deseas que podamos contactarte.</small>
-              </label>
-              <label>
-                <span>Correo electrónico (opcional)</span>
-                <input type="email" id="customer-email" name="customerEmail">
-                <small>Solo si deseas recibir confirmación.</small>
               </label>
             </div>
 
