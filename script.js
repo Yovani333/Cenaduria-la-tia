@@ -5,6 +5,7 @@ const menuLists = document.querySelectorAll(".menu-list");
 const year = document.querySelector("#year");
 
 const cart = new Map();
+const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxARWe2hxE4IiIVE_-75gMilPj6TdAQ0773_7-WnOVgE00yQbnj2g0kj1WqJFCwAtRj/exec";
 const currency = new Intl.NumberFormat("es-MX", {
   style: "currency",
   currency: "MXN",
@@ -378,19 +379,61 @@ function buildOrderData(folio, formData) {
     email: formData.email,
     notes: formData.notes,
     items,
+    itemsSummary: items
+      .map((item) => `${item.quantity} x ${item.name} (${currency.format(item.unitPrice)} c/u) = ${currency.format(item.subtotal)}`)
+      .join("\n"),
     subtotal,
     ccsiDiscountApplied: discount > 0,
+    ccsiDiscountAppliedText: discount > 0 ? "Sí" : "No",
     discountAmount: discount,
     total,
+    badgeWarning:
+      discount > 0
+        ? "Validar gafete CCSI al momento de pagar."
+        : "",
   };
 }
 
-function submitOrder(orderData) {
-  // TODO: Replace this demo adapter with a real endpoint:
-  // - Google Apps Script Web App that writes to Google Sheets.
-  // - Firebase / Supabase insert.
-  // - A private backend endpoint owned by the restaurant.
-  // Keep that backend URL outside of this public static file when possible.
+async function sendOrderToGoogleSheets(orderData) {
+  if (!isGoogleScriptConfigured()) {
+    return { ok: false, mode: "demo-local", skipped: true };
+  }
+
+  const response = await fetch(GOOGLE_SCRIPT_URL, {
+    method: "POST",
+    headers: {
+      "Content-Type": "text/plain;charset=utf-8",
+    },
+    body: JSON.stringify(orderData),
+  });
+  const data = await response.json().catch(() => ({}));
+
+  if (!response.ok || data.ok === false) {
+    throw new Error(data.message || "Google Apps Script no confirmó el pedido.");
+  }
+
+  return data;
+}
+
+async function submitOrder(orderData) {
+  // TODO: For production, keep GOOGLE_SCRIPT_URL pointed to a Google Apps Script
+  // Web App or replace sendOrderToGoogleSheets with Firebase, Supabase, or a
+  // private backend endpoint owned by the restaurant.
+  if (isGoogleScriptConfigured()) {
+    const result = await sendOrderToGoogleSheets(orderData);
+    saveOrderDemoBackup(orderData);
+    return result;
+  }
+
+  saveOrderDemoBackup(orderData);
+  return Promise.resolve({ ok: true, mode: "demo-local" });
+}
+
+function isGoogleScriptConfigured() {
+  return GOOGLE_SCRIPT_URL && !GOOGLE_SCRIPT_URL.includes("PEGAR_AQUI_URL");
+}
+
+function saveOrderDemoBackup(orderData) {
   const key = "cenaduriaLaTiaOrdersDemo";
   try {
     const orders = JSON.parse(window.localStorage.getItem(key) || "[]");
@@ -399,8 +442,6 @@ function submitOrder(orderData) {
   } catch {
     console.warn("Pedido generado, pero no se pudo guardar en la cola demo local.");
   }
-
-  return Promise.resolve({ ok: true, mode: "demo-local" });
 }
 
 function renderConfirmation(orderData) {
@@ -491,8 +532,12 @@ orderForm?.addEventListener("submit", async (event) => {
   const folio = getNextFolio();
   const formData = getFormData();
   const orderData = buildOrderData(folio, formData);
-  await submitOrder(orderData);
-  renderConfirmation(orderData);
+  try {
+    await submitOrder(orderData);
+    renderConfirmation(orderData);
+  } catch {
+    showError(["No se pudo enviar el pedido al sistema. Intenta nuevamente o avisa al restaurante."]);
+  }
 });
 
 orderConfirmation?.addEventListener("click", (event) => {
@@ -520,3 +565,4 @@ updateDeliveryFields();
 renderCart();
 
 window.submitOrder = submitOrder;
+window.sendOrderToGoogleSheets = sendOrderToGoogleSheets;
