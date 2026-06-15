@@ -3,9 +3,11 @@ const navLinks = document.querySelector(".nav-links");
 const tabButtons = document.querySelectorAll(".tab-button");
 const menuLists = document.querySelectorAll(".menu-list");
 const year = document.querySelector("#year");
+const themeToggle = document.querySelector(".theme-toggle");
 
 const cart = new Map();
 const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyCS5JJNQAyHCWOuuoDPM-9JcDmQjKy4dOgzwkwQSMnBcXBBLaX5S0JKgPUxrfC5lVc/exec";
+const MIN_ORDER_TIME = "11:15";
 const currency = new Intl.NumberFormat("es-MX", {
   style: "currency",
   currency: "MXN",
@@ -29,6 +31,32 @@ const deliveryReference = document.querySelector("#delivery-reference");
 const ccsiDiscount = document.querySelector("#ccsi-discount");
 const orderConfirmation = document.querySelector("#order-confirmation");
 let folioCounterFallback = 0;
+
+function setTheme(isDarkMode) {
+  document.body.classList.toggle("dark-mode", isDarkMode);
+
+  if (themeToggle) {
+    themeToggle.textContent = isDarkMode ? "Modo claro" : "Modo oscuro";
+    themeToggle.setAttribute("aria-label", isDarkMode ? "Activar modo claro" : "Activar modo oscuro");
+    themeToggle.setAttribute("aria-pressed", String(isDarkMode));
+  }
+
+  try {
+    window.localStorage.setItem("cenaduriaLaTiaDarkMode", isDarkMode ? "1" : "0");
+  } catch {
+    // El modo visual sigue funcionando aunque el navegador no permita guardar la preferencia.
+  }
+}
+
+try {
+  setTheme(window.localStorage.getItem("cenaduriaLaTiaDarkMode") === "1");
+} catch {
+  setTheme(false);
+}
+
+themeToggle?.addEventListener("click", () => {
+  setTheme(!document.body.classList.contains("dark-mode"));
+});
 
 if (year) {
   year.textContent = new Date().getFullYear();
@@ -63,16 +91,18 @@ tabButtons.forEach((button) => {
 
 function getProductFromCard(card) {
   const name = card.querySelector("h3")?.textContent?.trim();
-  const priceText = card.querySelector(".menu-card-content strong")?.textContent || "";
+  const priceText = card.querySelector(".menu-card-content strong, .dish-price")?.textContent || "";
   const price = Number(priceText.replace(/[^0-9.]/g, ""));
-  const category = card.querySelector(".menu-category")?.textContent?.trim() || "Menu";
+  const category =
+    card.querySelector(".menu-category")?.textContent?.trim() ||
+    (card.closest("#platillos") ? "Destacados" : "Menu");
 
   if (!name || Number.isNaN(price)) {
     return null;
   }
 
   return {
-    id: `${category}-${name}`.toLowerCase().replace(/\s+/g, "-"),
+    id: name.toLowerCase().replace(/\s+/g, "-"),
     name,
     price,
     category,
@@ -80,8 +110,8 @@ function getProductFromCard(card) {
 }
 
 function setupMenuOrderButtons() {
-  document.querySelectorAll("#menu .menu-card").forEach((card) => {
-    const content = card.querySelector(".menu-card-content");
+  document.querySelectorAll("#menu .menu-card, #platillos .dish-card").forEach((card) => {
+    const content = card.querySelector(".menu-card-content, .dish-info");
     const product = getProductFromCard(card);
 
     if (!content || !product || content.querySelector(".menu-add-btn")) {
@@ -255,6 +285,11 @@ function validateOrder() {
       errors.push(`Completa: ${label}.`);
     }
   });
+
+  const desiredTime = document.querySelector("#desired-time")?.value;
+  if (desiredTime && desiredTime < MIN_ORDER_TIME) {
+    errors.push("La hora deseada debe ser a partir de las 11:15 a. m.");
+  }
 
   if (deliveryType?.value === "Voy a recoger" && !pickupPlace?.value.trim()) {
     errors.push("Completa: Lugar donde piensa recoger.");
