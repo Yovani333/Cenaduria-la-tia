@@ -24,6 +24,31 @@ const HEADERS = [
   "Estado",
 ];
 
+const STATUS_OPTIONS = ["Nuevo", "Pendiente", "Completado", "Cancelado"];
+const STATUS_COLUMN = HEADERS.indexOf("Estado") + 1;
+const SUMMARY_START_COLUMN = HEADERS.length + 2;
+
+function onOpen() {
+  SpreadsheetApp.getUi()
+    .createMenu("Pedidos")
+    .addItem("Ordenar y formatear hoja", "setupOrdersSheetManual")
+    .addItem("Marcar pedido seleccionado como completado", "markSelectedOrderCompleted")
+    .addToUi();
+}
+
+function onEdit(e) {
+  if (!e || !e.range) {
+    return;
+  }
+
+  const sheet = e.range.getSheet();
+  const editedColumn = e.range.getColumn();
+
+  if (editedColumn === STATUS_COLUMN) {
+    updateOrderSummary(sheet);
+  }
+}
+
 function doPost(e) {
   try {
     const order = JSON.parse(e.postData.contents || "{}");
@@ -52,6 +77,8 @@ function doPost(e) {
       normalizedOrder.avisoGafete,
       normalizedOrder.estado,
     ]);
+
+    setupOrdersSheet(sheet);
 
     let emailAlertSent = true;
     let emailAlertError = "";
@@ -173,6 +200,25 @@ function testOrderEmailAlert() {
   });
 }
 
+function setupOrdersSheetManual() {
+  const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+  ensureHeaders(sheet);
+  setupOrdersSheet(sheet);
+}
+
+function markSelectedOrderCompleted() {
+  const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+  const row = sheet.getActiveRange().getRow();
+
+  if (row <= 1) {
+    SpreadsheetApp.getUi().alert("Selecciona una fila de pedido, no el encabezado.");
+    return;
+  }
+
+  sheet.getRange(row, STATUS_COLUMN).setValue("Completado");
+  setupOrdersSheet(sheet);
+}
+
 function ensureHeaders(sheet) {
   const lastColumn = Math.max(sheet.getLastColumn(), HEADERS.length);
   const currentHeaders = sheet.getRange(1, 1, 1, lastColumn).getValues()[0];
@@ -191,6 +237,203 @@ function ensureHeaders(sheet) {
   }
 
   sheet.setFrozenRows(1);
+}
+
+function setupOrdersSheet(sheet) {
+  const lastRow = Math.max(sheet.getLastRow(), 2);
+  const dataRange = sheet.getRange(1, 1, lastRow, HEADERS.length);
+  const statusRange = sheet.getRange(2, STATUS_COLUMN, Math.max(sheet.getMaxRows() - 1, 1), 1);
+  const statusRule = SpreadsheetApp.newDataValidation()
+    .requireValueInList(STATUS_OPTIONS, true)
+    .setAllowInvalid(false)
+    .build();
+
+  sheet.setFrozenRows(1);
+  sheet.getRange(1, 1, 1, HEADERS.length)
+    .setBackground("#8f151d")
+    .setFontColor("#ffffff")
+    .setFontWeight("bold")
+    .setHorizontalAlignment("center")
+    .setVerticalAlignment("middle");
+
+  dataRange
+    .setBorder(true, true, true, true, true, true, "#d8c3a5", SpreadsheetApp.BorderStyle.SOLID)
+    .setVerticalAlignment("middle")
+    .setWrap(true);
+
+  sheet.getRange(2, 1, Math.max(lastRow - 1, 1), HEADERS.length)
+    .setFontFamily("Arial")
+    .setFontSize(10);
+
+  statusRange.setDataValidation(statusRule);
+  sheet.getRange(2, STATUS_COLUMN, Math.max(lastRow - 1, 1), 1)
+    .setBackground("#fff2cc")
+    .setFontWeight("bold");
+
+  sheet.getRange(2, 13, Math.max(lastRow - 1, 1), 1).setNumberFormat("$#,##0");
+  sheet.getRange(2, 15, Math.max(lastRow - 1, 1), 1).setNumberFormat("$#,##0");
+  sheet.getRange(2, 16, Math.max(lastRow - 1, 1), 1).setNumberFormat("$#,##0");
+
+  sheet.setColumnWidth(1, 90);
+  sheet.setColumnWidth(2, 170);
+  sheet.setColumnWidth(3, 150);
+  sheet.setColumnWidth(4, 130);
+  sheet.setColumnWidth(5, 170);
+  sheet.setColumnWidth(6, 150);
+  sheet.setColumnWidth(7, 220);
+  sheet.setColumnWidth(8, 110);
+  sheet.setColumnWidth(9, 130);
+  sheet.setColumnWidth(10, 120);
+  sheet.setColumnWidth(11, 170);
+  sheet.setColumnWidth(12, 320);
+  sheet.setColumnWidth(13, 90);
+  sheet.setColumnWidth(14, 170);
+  sheet.setColumnWidth(15, 120);
+  sheet.setColumnWidth(16, 100);
+  sheet.setColumnWidth(17, 260);
+  sheet.setColumnWidth(18, 120);
+
+  sheet.setRowHeight(1, 34);
+  if (lastRow > 1) {
+    sheet.setRowHeights(2, lastRow - 1, 48);
+  }
+
+  if (!sheet.getFilter()) {
+    dataRange.createFilter();
+  }
+
+  applyStatusConditionalFormatting(sheet);
+  updateOrderSummary(sheet);
+}
+
+function applyStatusConditionalFormatting(sheet) {
+  const maxRows = Math.max(sheet.getMaxRows() - 1, 1);
+  const fullRowsRange = sheet.getRange(2, 1, maxRows, HEADERS.length);
+  const statusRange = sheet.getRange(2, STATUS_COLUMN, maxRows, 1);
+  const statusColumnLetter = columnToLetter(STATUS_COLUMN);
+  const existingRules = sheet.getConditionalFormatRules().filter(function (rule) {
+    return !rule.getRanges().some(function (range) {
+      return range.getColumn() === 1 && range.getNumColumns() === HEADERS.length;
+    });
+  });
+
+  const completedRule = SpreadsheetApp.newConditionalFormatRule()
+    .whenFormulaSatisfied("=$" + statusColumnLetter + '2="Completado"')
+    .setBackground("#d9ead3")
+    .setFontColor("#274e13")
+    .setRanges([fullRowsRange])
+    .build();
+
+  const cancelledRule = SpreadsheetApp.newConditionalFormatRule()
+    .whenFormulaSatisfied("=$" + statusColumnLetter + '2="Cancelado"')
+    .setBackground("#f4cccc")
+    .setFontColor("#660000")
+    .setRanges([fullRowsRange])
+    .build();
+
+  const pendingStatusRule = SpreadsheetApp.newConditionalFormatRule()
+    .whenTextEqualTo("Pendiente")
+    .setBackground("#fce5cd")
+    .setFontColor("#7f3f00")
+    .setRanges([statusRange])
+    .build();
+
+  const newStatusRule = SpreadsheetApp.newConditionalFormatRule()
+    .whenTextEqualTo("Nuevo")
+    .setBackground("#fff2cc")
+    .setFontColor("#7f6000")
+    .setRanges([statusRange])
+    .build();
+
+  sheet.setConditionalFormatRules(existingRules.concat([
+    completedRule,
+    cancelledRule,
+    pendingStatusRule,
+    newStatusRule,
+  ]));
+}
+
+function columnToLetter(column) {
+  let letter = "";
+  let temp = column;
+
+  while (temp > 0) {
+    const remainder = (temp - 1) % 26;
+    letter = String.fromCharCode(65 + remainder) + letter;
+    temp = Math.floor((temp - remainder) / 26);
+  }
+
+  return letter;
+}
+
+function updateOrderSummary(sheet) {
+  const startColumn = SUMMARY_START_COLUMN;
+  const titleRange = sheet.getRange(1, startColumn, 1, 2);
+  const summaryRange = sheet.getRange(2, startColumn, 3, 2);
+  const counts = getOrderStatusCounts(sheet);
+
+  titleRange.breakApart();
+  titleRange
+    .merge()
+    .setValue("Resumen")
+    .setBackground("#146b36")
+    .setFontColor("#ffffff")
+    .setFontWeight("bold")
+    .setHorizontalAlignment("center");
+
+  sheet.getRange(2, startColumn).setValue("Pendientes");
+  sheet.getRange(2, startColumn + 1).setValue(counts.pendientes);
+  sheet.getRange(3, startColumn).setValue("Completados");
+  sheet.getRange(3, startColumn + 1).setValue(counts.completados);
+  sheet.getRange(4, startColumn).setValue("Cancelados");
+  sheet.getRange(4, startColumn + 1).setValue(counts.cancelados);
+
+  summaryRange
+    .setBorder(true, true, true, true, true, true, "#d8c3a5", SpreadsheetApp.BorderStyle.SOLID)
+    .setBackground("#fff6e6")
+    .setFontWeight("bold")
+    .setHorizontalAlignment("center");
+
+  sheet.setColumnWidth(startColumn, 140);
+  sheet.setColumnWidth(startColumn + 1, 120);
+}
+
+function getOrderStatusCounts(sheet) {
+  const lastRow = sheet.getLastRow();
+  const counts = {
+    pendientes: 0,
+    completados: 0,
+    cancelados: 0,
+  };
+
+  if (lastRow <= 1) {
+    return counts;
+  }
+
+  const rows = sheet.getRange(2, 1, lastRow - 1, STATUS_COLUMN).getValues();
+
+  rows.forEach(function (row) {
+    const folio = row[0];
+    const status = row[STATUS_COLUMN - 1];
+
+    if (!folio) {
+      return;
+    }
+
+    if (status === "Completado") {
+      counts.completados += 1;
+      return;
+    }
+
+    if (status === "Cancelado") {
+      counts.cancelados += 1;
+      return;
+    }
+
+    counts.pendientes += 1;
+  });
+
+  return counts;
 }
 
 function buildItemsSummary(items) {
